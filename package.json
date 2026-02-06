@@ -1,13 +1,9 @@
 {
   "name": "bare-server",
   "version": "1.0.0",
-  "type": "commonjs",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
-  },
-  "dependencies": {
-    "@tomphttp/bare-server-node": "^2.2.4"
   },
   "engines": {
     "node": "18"
