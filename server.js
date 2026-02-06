@@ -1,25 +1,15 @@
-import BareServer from '@tomphttp/bare-server-node';
-import http from 'http';
+const http = require('http');
+const { createServer } = require('@tomphttp/bare-server-node');
 
 const server = http.createServer();
-const bareServer = new BareServer('/bare/', {
-  logErrors: true,
-  clientError: (error, socket) => {
-    console.error('Client Error:', error);
-    socket.end('HTTP/1.1 500 Internal Server Error\r\n\r\n');
-  },
-  serverError: (error, socket) => {
-    console.error('Server Error:', error);
-    socket.end('HTTP/1.1 500 Internal Server Error\r\n\r\n');
-  }
-});
+const bareServer = createServer('/bare/');
 
 server.on('request', (request, response) => {
   if (bareServer.shouldRoute(request)) {
     bareServer.routeRequest(request, response);
   } else {
     response.writeHead(200, { 'Content-Type': 'text/plain' });
-    response.end('BARE Server Running');
+    response.end('BARE Server is running!');
   }
 });
 
@@ -33,5 +23,6 @@ server.on('upgrade', (request, socket, head) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log(`BARE Server running on port ${PORT}`);
+  console.log(`BARE Server running on http://localhost:${PORT}`);
+  console.log(`Bare endpoint: http://localhost:${PORT}/bare/`);
 });
